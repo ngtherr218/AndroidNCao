@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/tvAppTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/lobster_regular"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:text="Foodgo"
+        android:textColor="@android:color/black"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:text="Đặt ngay món yêu thích của bạn."
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAppTitle" />
+
+    <!-- Search bar -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchBar"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTagline">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                app:srcCompat="@drawable/search" />
+
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="Tìm kiếm"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/tvLoc"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="16dp"
+                app:srcCompat="@drawable/group_2" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <HorizontalScrollView
+        android:id="@+id/sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingHorizontal="15dp"
+        android:scrollbars="none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius"
+                android:backgroundTint="#F84545"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="Tất cả"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvFastFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#F84545"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="Thức ăn nhanh"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvMainDishes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#F84545"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="Món chính"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvVegetarianDishes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#F84545"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="Đồ chay"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvAppetizers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#F84545"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="Món khai vị"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvDesserts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#F84545"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="Đồ tráng miệng"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvBeverages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/radius"
+                android:backgroundTint="#F84545"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp"
+                android:text="Đồ uống"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

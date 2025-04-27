@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Layer bóng -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#60000000" /> <!-- Màu bóng -->
+            <corners android:radius="20dp" />   <!-- Góc bo của bóng -->
+        </shape>
+    </item>
+
+    <!-- Layer Button -->
+    <item android:left="3dp" android:bottom="3dp"> <!-- Dịch bóng -->
+        <shape android:shape="rectangle">
+            <solid android:color="#3C2F2F" />   <!-- Màu Button -->
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+</layer-list>

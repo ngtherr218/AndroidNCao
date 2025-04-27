@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "555120668954",
+    "project_id": "myapp-879dc",
+    "storage_bucket": "myapp-879dc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555120668954:android:24f94997bb8813d34f7ca3",
+        "android_client_info": {
+          "package_name": "com.example.orderfoodgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY3pov-pDPpJDbKMgDTx1WpU81KGeQ2l4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
