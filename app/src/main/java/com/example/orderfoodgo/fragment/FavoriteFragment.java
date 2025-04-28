@@ -15,6 +15,8 @@ import com.example.orderfoodgo.R;
 import com.example.orderfoodgo.adapter.FavoriteAdapter;
 import com.example.orderfoodgo.model.FavoriteProduct;
 import com.example.orderfoodgo.util.SharedPreferencesUtil;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -86,34 +88,44 @@ public class FavoriteFragment extends Fragment {
         return view;
     }
 
+
     private void loadFavoriteProducts() {
         String userId = util.getUserIdFromSharedPreferences(getContext());
 
-        // Giả sử bạn đã có một collection "favorites" trong Firestore để lưu các sản phẩm yêu thích
-        db.collection("users")
-                .document(userId)
-                .collection("favorites")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            // Xử lý dữ liệu nếu có sản phẩm yêu thích
-                            for (QueryDocumentSnapshot document : querySnapshot) {
-                                FavoriteProduct favoriteProduct = document.toObject(FavoriteProduct.class);
-                                favoriteProductList.add(favoriteProduct);
-                            }
-                            // Khởi tạo adapter với dữ liệu
-                            adapter = new FavoriteAdapter(getContext(), favoriteProductList);
-                            recyclerView.setAdapter(adapter);
-                        } else {
-                            // Nếu danh sách yêu thích trống, hiển thị thông báo
-                            Toast.makeText(getContext(), "Không có sản phẩm yêu thích", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(getContext(), "Lỗi khi tải dữ liệu yêu thích", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+        if (userId != null && !userId.isEmpty()) {
+            // Truy vấn vào collection "favorites" của người dùng
+            DocumentReference userRef = db.collection("users").document(userId);
+            CollectionReference favoritesRef = userRef.collection("favorites");
 
+            // Lấy tất cả sản phẩm yêu thích của người dùng
+            favoritesRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    QuerySnapshot querySnapshot = task.getResult();
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        // Xử lý dữ liệu yêu thích từ Firestore
+                        List<FavoriteProduct> favoriteProductList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : querySnapshot) {
+                            // Chuyển đổi dữ liệu từ Firestore thành đối tượng FavoriteProduct
+                            FavoriteProduct favoriteProduct = document.toObject(FavoriteProduct.class);
+                            favoriteProductList.add(favoriteProduct);
+                        }
+
+                        // Khởi tạo adapter với dữ liệu và thiết lập RecyclerView
+                        adapter = new FavoriteAdapter(getContext(), favoriteProductList);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        // Nếu không có sản phẩm yêu thích, hiển thị thông báo
+                        Toast.makeText(getContext(), "Không có sản phẩm yêu thích", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Nếu có lỗi trong việc truy vấn dữ liệu từ Firestore
+                    Toast.makeText(getContext(), "Lỗi khi tải dữ liệu yêu thích", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // Nếu userId không hợp lệ, hiển thị thông báo
+            Toast.makeText(getContext(), "Người dùng chưa đăng nhập", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
+

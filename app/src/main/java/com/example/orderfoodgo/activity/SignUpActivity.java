@@ -77,7 +77,8 @@ public class SignUpActivity extends AppCompatActivity {
                             // Nếu không tìm thấy người dùng có username này
                             if (querySnapshot.isEmpty()) {
                                 // Tạo đối tượng User mới với ID tự sinh ra
-                                User user = new User(null, username, password, email);  // Firestore sẽ tự động tạo ID
+                                // Tạo đối tượng User mà không cần userId
+                                User user = new User(username, password, email);  // Firestore sẽ tự động tạo ID
 
                                 // Thêm người dùng vào Firestore
                                 db.collection("users")
@@ -86,13 +87,27 @@ public class SignUpActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
                                                 // Gán userId cho người dùng sau khi tài liệu được thêm thành công
-                                                user.setUserId(documentReference.getId());
 
-                                                // Hiển thị thông báo và chuyển sang trang đăng nhập
-                                                Toast.makeText(SignUpActivity.this, "Đăng ký thành công! Mời bạn đăng nhập.", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-                                                startActivity(intent);
-                                                finishAffinity();
+                                                // Cập nhật lại thông tin người dùng trong Firestore nếu cần thiết (Optional)
+                                                db.collection("users")
+                                                        .document(documentReference.getId())
+                                                        .set(user)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                // Hiển thị thông báo và chuyển sang trang đăng nhập
+                                                                Toast.makeText(SignUpActivity.this, "Đăng ký thành công! Mời bạn đăng nhập.", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                                                                startActivity(intent);
+                                                                finishAffinity();
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.d("Register", "Cập nhật thông tin người dùng thất bại: " + e.getMessage());
+                                                            }
+                                                        });
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -100,9 +115,9 @@ public class SignUpActivity extends AppCompatActivity {
                                             public void onFailure(@NonNull Exception e) {
                                                 Log.d("Register", "Đăng ký thất bại: " + e.getMessage());
                                                 Toast.makeText(SignUpActivity.this, "Đăng ký không thành công. Hãy thử lại!", Toast.LENGTH_SHORT).show();
-
                                             }
                                         });
+
                             } else {
                                 Toast.makeText(SignUpActivity.this, "Tên đăng nhập đã tồn tại!", Toast.LENGTH_SHORT).show();
                             }

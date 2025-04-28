@@ -52,7 +52,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         String productId = favoriteProduct.getProductId();
         if (productId == null || productId.isEmpty()) {
             Toast.makeText(context, "Invalid product ID", Toast.LENGTH_SHORT).show();
-            return; // Skip this item if the product ID is invalid
+            return;
         }
 
         // Get product data from Firestore using the valid product ID
@@ -94,7 +94,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
                     Toast.makeText(context, "Product not found", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(context, "Failed to load product details", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Tải chi tiết không thành công", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -18,19 +18,11 @@ import com.example.orderfoodgo.activity.ProductDetailActivity;
 import com.example.orderfoodgo.model.FavoriteProduct;
 import com.example.orderfoodgo.model.Product;
 import com.example.orderfoodgo.util.SharedPreferencesUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.List;
-import java.util.Map;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -99,41 +91,38 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             });
 
             // Xử lý sự kiện click vào nút yêu thích
-            holder.ivFavorite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!userId.isEmpty()) {
-                        favoritesRef.document(productId).get().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                if (task.getResult().exists()) {
-                                    // Nếu sản phẩm đã có trong yêu thích, xóa nó
-                                    favoritesRef.document(productId).delete().addOnCompleteListener(deleteTask -> {
-                                        if (deleteTask.isSuccessful()) {
-                                            holder.ivFavorite.setImageResource(R.drawable.baseline_favorite_border_24);
-                                            Toast.makeText(holder.itemView.getContext(), product.getName() + " removed from favorites", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(holder.itemView.getContext(), "Unable to remove from favorites", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                } else {
-                                    // Nếu sản phẩm chưa có trong yêu thích, thêm nó
-                                    FavoriteProduct favoriteProduct = new FavoriteProduct(productId, userId);
-                                    favoritesRef.document(productId).set(favoriteProduct).addOnCompleteListener(addTask -> {
-                                        if (addTask.isSuccessful()) {
-                                            holder.ivFavorite.setImageResource(R.drawable.baseline_favorite_25);
-                                            Toast.makeText(holder.itemView.getContext(), "Added to Favorites!", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(holder.itemView.getContext(), "Unable to add to favorites", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
+            holder.ivFavorite.setOnClickListener(view -> {
+                if (!userId.isEmpty()) {
+                    favoritesRef.document(productId).get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().exists()) {
+                                // Nếu sản phẩm đã có trong yêu thích, xóa nó
+                                favoritesRef.document(productId).delete().addOnCompleteListener(deleteTask -> {
+                                    if (deleteTask.isSuccessful()) {
+                                        holder.ivFavorite.setImageResource(R.drawable.baseline_favorite_border_24);
+                                        Toast.makeText(holder.itemView.getContext(), "Đã xóa " + product.getName() + " khỏi yêu thích", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(holder.itemView.getContext(), "Không thể xóa khỏi yêu thích", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else {
-                                Toast.makeText(holder.itemView.getContext(), "Failed to check favorites", Toast.LENGTH_SHORT).show();
+                                // Nếu sản phẩm chưa có trong yêu thích, thêm nó
+                                FavoriteProduct favoriteProduct = new FavoriteProduct(productId, userId);
+                                favoritesRef.document(productId).set(favoriteProduct).addOnCompleteListener(addTask -> {
+                                    if (addTask.isSuccessful()) {
+                                        holder.ivFavorite.setImageResource(R.drawable.baseline_favorite_25);
+                                        Toast.makeText(holder.itemView.getContext(), "Đã thêm vào yêu thích!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(holder.itemView.getContext(), "Không thể thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-                        });
-                    } else {
-                        Toast.makeText(holder.itemView.getContext(), "User not logged in!", Toast.LENGTH_SHORT).show();
-                    }
+                        } else {
+                            Toast.makeText(holder.itemView.getContext(), "Không kiểm tra được trạng thái", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(holder.itemView.getContext(), "Người dùng không đăng nhập", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

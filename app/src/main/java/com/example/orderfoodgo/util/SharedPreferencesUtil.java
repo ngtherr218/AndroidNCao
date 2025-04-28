@@ -18,4 +18,11 @@ public class SharedPreferencesUtil {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString("user_id", null);
     }
+
+    public static void clearUserIdFromSharedPreferences(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("user_id");  // Xóa dữ liệu user_id
+        editor.apply();
+    }
 }

@@ -1,9 +1,7 @@
 package com.example.orderfoodgo.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.orderfoodgo.R;
-import com.example.orderfoodgo.model.User;
 import com.example.orderfoodgo.util.SharedPreferencesUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -92,7 +89,7 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         } else {
                             // Không tìm thấy người dùng
-                            Toast.makeText(SignInActivity.this, "Username chưa được đăng ký", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Người dùng chưa được đăng ký", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

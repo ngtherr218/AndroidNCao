@@ -33,6 +33,18 @@
         <activity android:name=".activity.ProductDetailActivity"
             android:exported="false">
         </activity>
+        <activity android:name=".activity.ProfileActivity"
+            android:exported="false">
+        </activity>
+        <activity android:name=".activity.OrderHistoryActivity"
+            android:exported="false">
+        </activity>
+        <activity android:name=".activity.DeliveryInfoActivity"
+            android:exported="false">
+        </activity>
+        <activity android:name=".activity.AddDeliveryInfoActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

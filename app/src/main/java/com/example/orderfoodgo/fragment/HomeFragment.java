@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,8 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
+    ImageView ivSearch;
+    EditText etSearch;
     List<Product> productList = new ArrayList<>();
     ProductAdapter productAdapter;
     TextView tvAll, tvFastFood, tvMainDishes, tvVegetarianDishes, tvAppetizers, tvDesserts, tvBeverages;
@@ -93,9 +97,18 @@ public class HomeFragment extends Fragment {
         tvAppetizers = view.findViewById(R.id.tvAppetizers);
         tvDesserts = view.findViewById(R.id.tvDesserts);
         tvBeverages = view.findViewById(R.id.tvBeverages);
+        ivSearch = view.findViewById(R.id.ivSearch);
+        etSearch = view.findViewById(R.id.etSearch);
 
         loadProducts();
-        // Khi click vào từng danh mục, gọi hàm loadProductsByCategory
+
+        ivSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadProductByName(etSearch.getText().toString());
+            }
+        });
+
         tvAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,5 +221,29 @@ public class HomeFragment extends Fragment {
                 });
     }
 
-
+    private void loadProductByName(String name){
+        db.collection("products")
+                .whereGreaterThanOrEqualTo("name", name)
+                .whereLessThan("name", name + '\uf8ff')  // '\uf8ff' is the last Unicode character, ensuring a partial match
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Product> productList = new ArrayList<>();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Product product = document.toObject(Product.class);
+                            product.setId(document.getId());  // Set the Firestore document ID
+                            productList.add(product);
+                        }
+                        // Update adapter
+                        productAdapter = new ProductAdapter(productList);
+                        recyclerView.setAdapter(productAdapter);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        int spacingInPixels = 6;
+                        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
+                    } else {
+                        // Handle error
+                        Toast.makeText(getContext(), "Không thể tải sản phẩm", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
