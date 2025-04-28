@@ -59,24 +59,21 @@
         android:id="@+id/quantityLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="247dp"
-        android:layout_marginEnd="15dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvCategory">
+        app:layout_constraintStart_toEndOf="@+id/tvPrice">
 
-        <!-- Decrease Button -->
-        <ImageButton
-            android:id="@+id/decreaseQuantity"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="Decrease Quantity"
-            android:scaleType="fitXY"
-            android:src="@drawable/minus" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:gravity="center"
+            android:text="SL:"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
         <!-- Quantity Text -->
         <TextView
             android:id="@+id/itemQuantity"
@@ -84,25 +81,17 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:gravity="center"
-            android:text="1"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <!-- Increase Button -->
-        <ImageButton
-            android:id="@+id/increaseQuantity"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="?attr/selectableItemBackground"
-            android:contentDescription="Increase Quantity"
-            android:scaleType="fitXY"
-            android:src="@drawable/plus" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/deleteButton"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:visibility="invisible"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:background="@drawable/exit"

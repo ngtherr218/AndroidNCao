@@ -20,8 +20,7 @@
             android:id="@+id/ivProduct"
             android:layout_width="110dp"
             android:layout_height="92dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:scaleType="centerCrop"/>
 
         <!-- Product Name -->
         <TextView
@@ -29,7 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:paddingTop="8dp"
-            android:text="Cheeseburger"
             android:gravity="center"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -40,7 +38,6 @@
             android:id="@+id/tvProductCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wendy's Burger"
             android:textColor="#3C2F2F"
             android:textSize="12sp" />
 
@@ -62,7 +59,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:text="4.9"
                 android:textColor="@android:color/holo_orange_dark"
                 android:textStyle="bold" />
 

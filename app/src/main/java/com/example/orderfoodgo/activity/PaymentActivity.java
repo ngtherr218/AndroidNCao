@@ -45,7 +45,7 @@ public class PaymentActivity extends AppCompatActivity {
     TextView tvAddress;
     TextView btnOrder;
 
-    interface Callback{
+    interface Callback {
         void callback(List<CartItem> list);
     }
 

@@ -6,9 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InvoiceActivity">
+    tools:context=".activity.OrderHistoryActivity">
 
-    <!-- Nút Quay Lại -->
     <ImageView
         android:id="@+id/goback"
         android:layout_width="38dp"
@@ -27,17 +26,19 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Lịch sử đặt hàng"
+        android:fontFamily="@font/lobster_regular"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" /><!-- Nút Quay Lại -->
+
 
     <!-- Danh sách hóa đơn -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecycleViewInvoice"
+        android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"

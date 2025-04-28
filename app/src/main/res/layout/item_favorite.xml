@@ -19,8 +19,6 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="nameProduct"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -42,7 +39,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="nameCategory"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/ivProduct"
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
@@ -64,7 +60,6 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="1dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="4.2"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/tvCategory" />

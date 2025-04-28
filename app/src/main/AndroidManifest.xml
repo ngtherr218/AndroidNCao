@@ -48,6 +48,9 @@
         <activity android:name=".activity.PaymentActivity"
             android:exported="false">
         </activity>
+        <activity android:name=".activity.OrderDetailActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
