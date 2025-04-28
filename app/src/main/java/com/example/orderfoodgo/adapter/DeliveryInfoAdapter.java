@@ -1,6 +1,7 @@
 package com.example.orderfoodgo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.orderfoodgo.R;
+import com.example.orderfoodgo.activity.PaymentActivity;
 import com.example.orderfoodgo.model.DeliveryInfo;
 import com.example.orderfoodgo.util.SharedPreferencesUtil;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,10 +22,14 @@ import java.util.List;
 
 public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapter.DeliveryInfoViewHolder> {
     private List<DeliveryInfo> deliveryInfoList;
+    private List<String> deliveryIds;
+    private int key;
 
     // Constructor
-    public DeliveryInfoAdapter(List<DeliveryInfo> deliveryInfoList) {
+    public DeliveryInfoAdapter(List<DeliveryInfo> deliveryInfoList, int key, List<String> deliveryIds) {
         this.deliveryInfoList = deliveryInfoList;
+        this.deliveryIds = deliveryIds;
+        this.key = key;
     }
 
     // ViewHolder to bind views
@@ -58,6 +64,27 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
         holder.deleteButton.setOnClickListener(v -> {
             deleteDeliveryInfo(holder, info, position);
         });
+
+        if (key == 1) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = holder.getAdapterPosition();  // Lấy vị trí chính xác tại thời điểm click
+                    if (pos != RecyclerView.NO_POSITION) {  // Kiểm tra hợp lệ
+                        DeliveryInfo deliveryInfo = deliveryInfoList.get(pos);
+                        String id = deliveryIds.get(pos);  // Lấy id đúng vị trí mới
+
+                        Intent intent = new Intent(holder.itemView.getContext(), PaymentActivity.class);
+                        intent.putExtra("receiverName", deliveryInfo.getName());
+                        intent.putExtra("address", deliveryInfo.getAddress());
+                        intent.putExtra("phone", deliveryInfo.getPhone());
+                        intent.putExtra("deliveryId", id);  // truyền id
+                        holder.itemView.getContext().startActivity(intent);
+                    }
+                }
+            });
+        }
+
     }
 
     @Override
@@ -69,7 +96,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
     private void deleteDeliveryInfo(DeliveryInfoViewHolder holder, DeliveryInfo info, int position) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         SharedPreferencesUtil util = new SharedPreferencesUtil();
-        String userId = util.getUserIdFromSharedPreferences(holder.itemView.getContext()) ;
+        String userId = util.getUserIdFromSharedPreferences(holder.itemView.getContext());
         db.collection("users")
                 .document(userId)
                 .collection("deliveryinfos")

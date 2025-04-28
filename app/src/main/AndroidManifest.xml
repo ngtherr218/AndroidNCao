@@ -45,6 +45,9 @@
         <activity android:name=".activity.AddDeliveryInfoActivity"
             android:exported="false">
         </activity>
+        <activity android:name=".activity.PaymentActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

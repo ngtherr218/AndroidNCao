@@ -25,6 +25,7 @@ import java.util.List;
 public class DeliveryInfoActivity extends AppCompatActivity {
     ImageView ivAdd;
     RecyclerView recyclerView;
+    int check;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class DeliveryInfoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Intent intent = getIntent();
+        check = intent.getIntExtra("key",0);
 
         loadDeliveryInfo();
 
@@ -65,13 +68,15 @@ public class DeliveryInfoActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         List<DeliveryInfo> deliveryInfoList = new ArrayList<>();
+                        List<String> deliveryIds = new ArrayList<>();
                         for (DocumentSnapshot document : queryDocumentSnapshots) {
                             DeliveryInfo deliveryInfo = document.toObject(DeliveryInfo.class);
                             deliveryInfoList.add(deliveryInfo);
+                            deliveryIds.add(document.getId());
                         }
 
                         // Set up the adapter with the data
-                        DeliveryInfoAdapter adapter = new DeliveryInfoAdapter(deliveryInfoList);
+                        DeliveryInfoAdapter adapter = new DeliveryInfoAdapter(deliveryInfoList, check,deliveryIds);
                         recyclerView.setAdapter(adapter);
                     }
                 })

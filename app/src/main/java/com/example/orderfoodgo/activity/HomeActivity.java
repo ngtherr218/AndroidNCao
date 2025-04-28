@@ -31,16 +31,7 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
         openFragment(new HomeFragment());
-        if (getIntent().getBooleanExtra("showProfileFragment", false)) {
-            openFragment(new ProfileFragment());
-            // Đặt trạng thái item "Profile" được chọn trong BottomNavigationView
-            bottomNavigationView = findViewById(R.id.bottomNavigationView);
-            bottomNavigationView.setSelectedItemId(R.id.profile);
-        } else {
-            // Trường hợp mặc định
-            bottomNavigationView = findViewById(R.id.bottomNavigationView);
-            bottomNavigationView.setSelectedItemId(R.id.home);
-        }
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
