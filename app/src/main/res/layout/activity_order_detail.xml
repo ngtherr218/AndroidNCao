@@ -150,6 +150,7 @@
         android:background="?android:attr/selectableItemBackground"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeline">
 
@@ -190,11 +191,12 @@
 
             <TextView
                 android:id="@+id/tvAddress"
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
                 android:text="33 147 Trèo Khúc"
                 android:textSize="18sp"
+                android:gravity="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -318,5 +320,21 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/tvHuy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/button_shadow"
+        android:backgroundTint="#EFEEEA"
+        android:padding="10dp"
+        android:layout_marginEnd="20dp"
+        android:text="Hủy đơn hàng"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/tvStatus"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

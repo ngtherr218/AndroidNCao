@@ -93,11 +93,13 @@ public class CartFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         cartItems = new ArrayList<>();
+
         cartItemAdapter = new CartItemAdapter(getContext(), cartItems);
         recyclerView.setAdapter(cartItemAdapter);
 
         db = FirebaseFirestore.getInstance();
         loadCartItems();
+
 
         btnCheckOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,36 +121,38 @@ public class CartFragment extends Fragment {
 
     private void loadCartItems() {
         SharedPreferencesUtil util = new SharedPreferencesUtil();
-        String userId = util.getUserIdFromSharedPreferences(getContext());  // Lấy userId từ SharedPreferences
+        String userId = util.getUserIdFromSharedPreferences(getContext());
 
         if (userId != null && !userId.isEmpty()) {
-            // Truy vấn Firestore theo idUser và lấy dữ liệu từ collection carts
-            db.collection("users").document(userId)  // Lấy document của user từ Firestore
-                    .collection("carts")  // Lấy collection carts của user
-                    .get()  // Lấy tất cả các document trong collection carts
+            db.collection("users").document(userId)
+                    .collection("carts")
+                    .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            // Xử lý kết quả trả về từ Firestore
+                            cartItems.clear(); // Xoá danh sách cũ trước khi thêm mới
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Tạo CartItem từ dữ liệu trong Firestore
                                 String id = document.getId();
                                 String idUser = document.getString("idUser");
                                 String idProduct = document.getString("idProduct");
                                 int quantity = document.getLong("quantity").intValue();
 
-                                // Tạo đối tượng CartItem và thêm vào danh sách
                                 CartItem cartItem = new CartItem(id, idUser, idProduct, quantity);
-                                cartItems.add(cartItem);  // Thêm CartItem vào danh sách
+                                cartItems.add(cartItem);
                             }
-                            // Cập nhật RecyclerView sau khi lấy dữ liệu
+
                             cartItemAdapter.notifyDataSetChanged();
+
+                            if (cartItems.isEmpty()) {
+                                btnCheckOut.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getContext(), "Chưa có sản phẩm nào trong giỏ hàng", Toast.LENGTH_SHORT).show();
+                            } else {
+                                btnCheckOut.setVisibility(View.VISIBLE);
+                            }
                         } else {
-                            // Thông báo lỗi nếu không lấy được dữ liệu
                             Toast.makeText(getContext(), "Không thể tải giỏ hàng", Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
-            // Thông báo nếu không có userId trong SharedPreferences
             Toast.makeText(getContext(), "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
         }
     }

@@ -3,6 +3,7 @@ package com.example.orderfoodgo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private List<OrderDetail> orderDetailList;
     private FirebaseFirestore db;
     private String idOrder;
+    TextView tvHuy;
+    String userId;
     TextView tvStatus, tvTotalMoney, tvDeliveryFee, tvDate, tvName, tvAddress;
 
     @Override
@@ -75,7 +78,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (deliveryId != null) {
             // Lấy thông tin người nhận từ Firestore
             SharedPreferencesUtil util = new SharedPreferencesUtil();
-            String userId = util.getUserIdFromSharedPreferences(this);
+            userId = util.getUserIdFromSharedPreferences(this);
             if (userId != null) {
                 DocumentReference deliveryRef = db.collection("users")
                         .document(userId)
@@ -102,6 +105,29 @@ public class OrderDetailActivity extends AppCompatActivity {
         loadOrderDetails(idOrder);
         updateTimeline(status);
 
+
+        if (status.equals("Chờ xác nhận")) {
+            tvHuy.setVisibility(View.VISIBLE);
+        }
+
+        tvHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new androidx.appcompat.app.AlertDialog.Builder(OrderDetailActivity.this)
+                        .setTitle("Xác nhận huỷ đơn")
+                        .setMessage("Bạn có chắc chắn muốn huỷ đơn hàng này không?")
+                        .setPositiveButton("Có", (dialog, which) -> {
+                            cancelOrder(userId, idOrder);
+                            finish();
+                        })
+                        .setNegativeButton("Không", (dialog, which) -> {
+                            dialog.dismiss(); // Đóng dialog nếu chọn Không
+                        })
+                        .show();
+            }
+        });
+
+
     }
 
     private void init() {
@@ -113,7 +139,39 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvTotalMoney = findViewById(R.id.tvTotalMoney);
         tvStatus = findViewById(R.id.tvStatus);
         tvAddress = findViewById(R.id.tvAddress);
+        tvHuy = findViewById(R.id.tvHuy);
     }
+
+    // Hàm hủy đơn hàng
+    private void cancelOrder(String userId, String orderId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference orderRef = db.collection("users").document(userId).collection("orders").document(orderId);
+
+        // Xóa toàn bộ orderDetails trước
+        orderRef.collection("orderDetails")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        document.getReference().delete(); // Xóa từng chi tiết đơn hàng
+                    }
+
+                    // Sau khi xóa hết orderDetails, xóa luôn đơn hàng
+                    orderRef.delete()
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(OrderDetailActivity.this, "Đơn hàng đã được hủy thành công!", Toast.LENGTH_SHORT).show();
+                                Log.d("CancelOrder", "Order canceled successfully");
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(OrderDetailActivity.this, "Không thể xóa đơn hàng", Toast.LENGTH_SHORT).show();
+                                Log.e("CancelOrderError", "Error deleting order", e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(OrderDetailActivity.this, "Không thể xóa chi tiết đơn hàng", Toast.LENGTH_SHORT).show();
+                    Log.e("OrderDetailDeleteError", "Error deleting order details", e);
+                });
+    }
+
 
     private void loadOrderDetails(String idOrder) {
         if (idOrder == null) {
