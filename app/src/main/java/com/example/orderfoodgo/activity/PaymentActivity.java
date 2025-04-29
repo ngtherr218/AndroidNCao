@@ -117,7 +117,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 // Tạo đối tượng Order
                 String orderId = userRef.collection("orders").document().getId();
-                Order newOrder = new Order(orderId, userId, deliveryId, new Timestamp(new Date()), deliveryFee, total, "Đã đặt hàng");
+                Order newOrder = new Order(orderId, userId, deliveryId, new Timestamp(new Date()), deliveryFee, total, "Chờ xác nhận");
 
                 // Lưu đơn hàng vào Firestore
                 userRef.collection("orders")
